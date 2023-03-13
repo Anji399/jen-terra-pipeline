@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    environment {
-        PATH = "/usr/local/bin/:$PATH"
-    }
+    tool name: 'Terraform', type: 'terraform'
     
     stages {
         stage('Build Java Code') {
@@ -32,7 +30,6 @@ pipeline {
         }
         stage('check terraform and packer versions') {
             steps {
-                sh 'cd /usr/local/bin'
                 sh 'terraform version'
                 sh 'packer version'
             }
