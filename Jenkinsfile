@@ -1,10 +1,6 @@
 pipeline {
     agent any
-    environment {
-        registry = "mvpar/devops20"
-        registryCredential = 'dockerhub_id'
-        dockerimage = ''
-    }
+    
     stages {
         stage('Build Java Code') {
             steps {
@@ -18,12 +14,18 @@ pipeline {
                 s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'devops20artifact', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: true, selectedRegion: 'ap-south-1', showDirectlyInBrowser: false, sourceFile: '*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'devops-jen-s3-profile', userMetadata: []
             }
         }
-        stage('Push docker image') {
+        stage('Build docker image') {
             steps {
-                script {
-                   docker.build.registry
-                }
-            }
+                sh 'docker build -t mvpar/devops20 .'  
+           }    
+       }
+       stage('Push docker image') {
+            steps {
+              withCredentials([string(credentialsId: 'dockerize', variable: 'dockerr')]) {
+              sh "docker login -u mvpar -p ${dockerr}"
+            }  
+              sh 'docker push mvpar/devops20'
+            }    
         }
     }
 }            
