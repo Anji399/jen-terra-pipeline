@@ -32,7 +32,7 @@ pipeline {
         }
         stage('check terraform and packer versions') {
             steps {
-                sh 'cd C:/Users/userMusic/eb-tomcat-snakes'
+                sh 'cd /usr/local/bin'
                 sh 'terraform version'
                 sh 'packer version'
             }
