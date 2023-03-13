@@ -19,7 +19,7 @@ pipeline {
                 sh 'docker build -t mvpar/devops20 .'  
            }    
        }
-       stage('Push docker image') {
+        stage('Push docker image') {
             steps {
               withCredentials([string(credentialsId: 'dockerize', variable: 'dockerr')]) {
               sh "docker login -u mvpar -p ${dockerr}"
@@ -27,5 +27,12 @@ pipeline {
               sh 'docker push mvpar/devops20'
             }    
         }
+        stage('check terraform and packer versions') {
+            steps {
+                sh 'terraform version'
+                sh 'packer version'
+            }
+        }
+
     }
 }            
