@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    tool name: 'Terraform', type: 'terraform'
     
     stages {
         stage('Build Java Code') {
