@@ -23,9 +23,3 @@ variable "azs" {
   description = "Run the EC2 Instances in these Availability Zones"
   default = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
 }
-variable "environment" {
-  default = "dev"
-}
-variable "instance_type" {
-  default = "t2.micro"
-}
