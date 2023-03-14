@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        registry = 'mvpar/devops20'
-        registryCredential = 'dockerhub_id'
-        dockerImage = ''
+    registry = 'mvpar/devops20'
+    registryCredential = 'dockerhub_id'
+    dockerImage = ''
     }
     
     stages {
@@ -36,8 +36,8 @@ pipeline {
         stage('check terraform and packer versions') {
             steps {
                 script {
-                sh 'terraform version'
-                sh 'packer version'
+                  sh 'terraform version'
+                  sh 'packer version'
                 }
             }
         }
