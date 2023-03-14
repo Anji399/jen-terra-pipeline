@@ -2,8 +2,7 @@ variable "aws_region" {}
 variable "amis" {
     description = "AMIs by region"
     default = {
-        us-east-1 = "ami-97785bed" # ubuntu 14.04 LTS
-		ap-south-1 = "ami-f63b1193" # ubuntu 14.04 LTS
+		    ap-south-1 = "ami-0f8ca728008ff5af4" # ubuntu 14.04 LTS
 		
     }
 }
