@@ -12,77 +12,63 @@ terraform {
   }
 }
 
-resource "aws_vpc" "default" {
-    cidr_block = "${var.vpc_cidr}"
-    enable_dns_hostnames = true
-    tags = {
-        Name = "${var.vpc_name}"
-	Owner = "Sreeharsha Veerapalli"
-	environment = "${var.environment}"
-    }
+
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  instance_tenancy     = "default"
+  enable_dns_support   = "true"
+  enable_dns_hostnames = "true"
+  tags = {
+    Name = "my-vpc"
+  }
+}
+resource "aws_internet_gateway" "my-IGW" {
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name = "my-IGW"
+  }
 }
 
-resource "aws_internet_gateway" "default" {
-    vpc_id = "${aws_vpc.default.id}"
-	tags = {
-        Name = "${var.IGW_name}"
-    }
-}
-
-resource "aws_subnet" "subnet1-public" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.public_subnet1_cidr}"
-    availability_zone = "ap-south-1a"
-
-    tags = {
-        Name = "${var.public_subnet1_name}"
-    }
-}
-
-resource "aws_subnet" "subnet2-public" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.public_subnet2_cidr}"
-    availability_zone = "ap-south-1b"
-
-    tags = {
-        Name = "${var.public_subnet2_name}"
-    }
-}
-
-resource "aws_subnet" "subnet3-public" {
-    vpc_id = "${aws_vpc.default.id}"
-    cidr_block = "${var.public_subnet3_cidr}"
-    availability_zone = "ap-south-1c"
-
-    tags = {
-        Name = "${var.public_subnet3_name}"
-    }
-	
+resource "aws_subnet" "my-pub-1" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = "true"
+  availability_zone       = "ap-south-1a"
+  tags = {
+    Name = "my-pub-1"
+  }
 }
 
 
-resource "aws_route_table" "terraform-public" {
-    vpc_id = "${aws_vpc.default.id}"
+resource "aws_route_table" "my-pub-RT" {
+  vpc_id = aws_vpc.main.id
 
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.default.id}"
-    }
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my-IGW.id
+  }
 
-    tags = {
-        Name = "${var.Main_Routing_Table}"
-    }
+  tags = {
+    Name = "my-pub-RT"
+  }
 }
 
-resource "aws_route_table_association" "terraform-public" {
-    subnet_id = "${aws_subnet.subnet1-public.id}"
-    route_table_id = "${aws_route_table.terraform-public.id}"
+
+resource "aws_route_table_association" "my-pub-1-a" {
+  subnet_id      = aws_subnet.my-pub-1.id
+  route_table_id = aws_route_table.my-pub-RT.id
 }
 
-resource "aws_security_group" "allow_all" {
-  name        = "allow_all"
-  description = "Allow all inbound traffic"
-  vpc_id      = "${aws_vpc.default.id}"
+resource "aws_security_group" "my-sg" {
+  vpc_id      = aws_vpc.main.id
+  name        = "my-sg"
+  description = "Sec Grp for my ssh"
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   ingress {
     from_port   = 0
@@ -90,14 +76,11 @@ resource "aws_security_group" "allow_all" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
-    }
+  tags = {
+    Name = "allow-ssh"
+  }
 }
+
 
 
 
