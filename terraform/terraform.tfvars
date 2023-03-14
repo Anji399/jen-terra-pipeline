@@ -1,4 +1,3 @@
-amis = var.imagename
 aws_region = "ap-south-1"
 instance_type = "t2.micro"
 azs = "ap-south-1a"

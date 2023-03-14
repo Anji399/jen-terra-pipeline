@@ -1,5 +1,4 @@
 variable "aws_region" {}
-variable "amis" {}
 variable "vpc_cidr" {}
 variable "vpc_name" {}
 variable "IGW_name" {}
