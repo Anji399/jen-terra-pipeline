@@ -31,6 +31,8 @@ pipeline {
                 script {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
+                    }
+                }    
             }    
         }
         stage('check terraform and packer versions') {
