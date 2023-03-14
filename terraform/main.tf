@@ -3,12 +3,19 @@ provider "aws" {
 }
 
 terraform {
-  required_version = "<= 1.3.14" #Forcing which version of Terraform needs to be used
+  required_version = "<= 2.0.14" #Forcing which version of Terraform needs to be used
   required_providers {
     aws = {
-      version = "<= 5.0.0" #Forcing which version of plugin needs to be used.
+      version = "<= 4.0.0" #Forcing which version of plugin needs to be used.
       source = "hashicorp/aws"
     }
+  }
+}
+terraform {
+  backend "s3" {
+    bucket = "mppprbuckert"
+    key - mpr.tfstate
+    region = "ap-south-1"
   }
 }
 
@@ -85,21 +92,4 @@ resource "aws_security_group" "my-sg" {
 
 
 
-# resource "aws_instance" "web-1" {
-#     ami = var.imagename
-#     #ami = "ami-0d857ff0f5fc4e03b"
-#     #ami = "${data.aws_ami.my_ami.id}"
-#     availability_zone = "us-east-1a"
-#     instance_type = "t2.micro"
-#     key_name = "LaptopKey"
-#     subnet_id = "${aws_subnet.subnet1-public.id}"
-#     vpc_security_group_ids = ["${aws_security_group.allow_all.id}"]
-#     associate_public_ip_address = true	
-#     tags = {
-#         Name = "Server-1"
-#         Env = "Prod"
-#         Owner = "Sree"
-# 	CostCenter = "ABCD"
-#     }
-# }
 

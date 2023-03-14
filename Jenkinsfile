@@ -59,12 +59,22 @@ pipeline {
                 }
             }    
             steps {
+                dir('terraform') {
                 script {
                     def AMIID = 'ami-03bef618b5b4b5846'
                     sh "echo variable \\\"imagename\\\" { default = \\\"$AMIID\\\" } >> variables.tf"
                     sh 'cat variables.tf | grep -i imagename'
                 }
+                }
             }
         }
+        stage('Terraform init an plan') {
+            steps {
+                dir('terraform') {
+                    sh 'terraform init'
+                    sh 'terraform plan'
+                }
+            }
+        }        
     } 
 }               
