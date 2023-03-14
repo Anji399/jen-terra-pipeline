@@ -72,6 +72,7 @@ pipeline {
             steps {
                 dir('terraform') {
                     sh 'terraform init'
+                    sh 'terraform fmt'
                     sh 'terraform plan'
                 }
             }
