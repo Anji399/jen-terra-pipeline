@@ -14,7 +14,7 @@ terraform {
 terraform {
   backend "s3" {
     bucket = "mppprbuckert"
-    key = "mpr.tfstate"
+    key    = "mpr.tfstate"
     region = "ap-south-1"
   }
 }
