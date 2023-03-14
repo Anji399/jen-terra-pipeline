@@ -68,12 +68,11 @@ pipeline {
                 }
             }
         }
-        stage('Terraform init an plan') {
+        stage('Terraform deploy') {
             steps {
                 dir('terraform') {
                     sh 'terraform init'
-                    sh 'terraform fmt'
-                    sh 'terraform plan'
+                    sh 'terraform apply --auto-approve'
                 }
             }
         }        
