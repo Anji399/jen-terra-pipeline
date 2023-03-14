@@ -4,6 +4,7 @@ pipeline {
         registry = 'mvpar/devops20'
         registryCredential = 'dockerhub_id'
         dockerImage = ''
+    }
     
     stages {
         stage('Build Java Code') {
