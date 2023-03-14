@@ -26,8 +26,6 @@ variable "azs" {
 variable "environment" { default = "dev" }
 variable "instance_type" {
   default = {
-    dev = "t2.nano"
-    test = "t2.micro"
-    prod = "t2.medium"
+    dev = "t2.micro"
     }
 }
