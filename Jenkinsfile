@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        registry = 'mvpar/devops20'
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
     
     stages {
         stage('Build Java Code') {
@@ -16,15 +20,16 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh 'docker build -t mvpar/devops20 .'  
+                script {
+                  dockerImage = docker.build registry + ":$BUILD_NUMBER"
+              }  
            }    
        }
         stage('Push docker image') {
             steps {
-              withCredentials([string(credentialsId: 'dockerize', variable: 'dockerr')]) {
-              sh "docker login -u mvpar -p ${dockerr}"
-            }  
-              sh 'docker push mvpar/devops20'
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
             }    
         }
         stage('check terraform and packer versions') {
@@ -33,7 +38,7 @@ pipeline {
                 sh 'packer version'
             }
         }
-        stage('perform packer build'){
+       /* stage('perform packer build'){
             steps {
                 sh 'packer build -var-file packer-vars-dev.json packer.json | tee output.txt'
                             sh "tail -2 output.txt | head -2 | awk 'match(\$0, /ami-.*/) { print substr(\$0, RSTART, RLENGTH) }' > ami.txt"
@@ -44,7 +49,7 @@ pipeline {
                                 sh "echo variable \\\"imagename\\\" { default = \\\"$AMIID\\\" } >> variables.tf"
                             }
             }
-        }   
+        } */   
 
     }
 }            
