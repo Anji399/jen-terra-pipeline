@@ -35,14 +35,6 @@ pipeline {
                 }    
             }    
         }
-        stage('check terraform and packer versions') {
-            steps {
-                script {
-                  sh 'terraform version'
-                  sh 'packer version'
-                }
-            }
-        }
         stage('perform packer build') {
             steps {
                 sh 'packer build -var-file packer-vars.json packer.json | tee output.txt'
