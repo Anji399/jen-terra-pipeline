@@ -35,9 +35,11 @@ pipeline {
         }
         stage('check terraform and packer versions') {
             steps {
+                script {
                 sh 'terraform version'
                 sh 'packer version'
+                }
             }
         }
-    }
-}            
+    } 
+}               
