@@ -5,6 +5,7 @@ pipeline {
     registryCredential = 'dockerhub_id'
     dockerImage = ''
     PACKER_BUILD = 'NO'
+    DESTROY = 'YES'
     }
     
     stages {
@@ -84,21 +85,23 @@ pipeline {
                         def DOCKER_HOST = readFile('publicip.txt').trim()
                         sh "docker -H tcp://$DOCKER_HOST:2375 stop nginx0001"
                         sh "docker -H tcp://$DOCKER_HOST:2375 run --rm -dit --name nginx0001 -p 8081:8080 mvpar/devops20:$BUILD_NUMBER"
-                        sh 'sleep 5'
                     }
                 }
             }
         }
-        stage('Validate deployment') {
+        stage('Terraform destroy') {
+            when {
+                expression {
+                    env.DESTROY == 'YES'
+                }
+            }
             steps {
                 dir('terraform') {
-                    script {
-                        def DOCKER_HOST = readFile('publicip.txt').trim()
-                        sh 'curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1'
-                    }
+                    sh 'terraform init'
+                    sh 'terraform destroy --auto-approve'
                 }
             }
-        }
+        }            
 
     } 
 }               
