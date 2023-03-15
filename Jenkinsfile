@@ -84,7 +84,7 @@ pipeline {
                         def DOCKER_HOST = readFile('publicip.txt').trim()
                         sh "docker -H tcp://$DOCKER_HOST:2375 stop nginx001"
                         sh "docker -H tcp://$DOCKER_HOST:2375 run --rm -dit --name nginx001 -p 8081:8080 mvpar/devops20:$BUILD_NUMBER"
-                        sh "sleep 10"
+                        sh 'sleep 10'
                     }
                 }
             }
@@ -94,7 +94,7 @@ pipeline {
                 dir('terraform') {
                    script{
                      def DOCKER_HOST = readFile('publicip.txt').trim()
-                     sudo "curl -sL http://$DOCKER_HOST:8081/mywebapp/"
+                     sudo "curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1"
                     }  
                 }
             }
