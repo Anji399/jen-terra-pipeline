@@ -82,7 +82,7 @@ pipeline {
                 dir('terraform'){
                     script {
                         def DOCKER_HOST = readFile('publicip.txt').trim()
-                        sh "docker -H tcp://$DOCKER_HOST:2375 run --rm -dit --name nginx001 -p 8080:8080 sreeharshav/devopsb22:$BUILD_NUMBER"
+                        sh "docker -H tcp://$DOCKER_HOST:2375 run --rm -dit --name nginx001 -p 8080:8080 mvpar/devops20:$BUILD_NUMBER"
                     }
                 }
             }
