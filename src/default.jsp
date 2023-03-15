@@ -30,6 +30,7 @@
     <div id="hate" class="container snakes snake-hater">
       <h1 class="cover-heading">Welcome To Devops B22 Class</h1>
       <p class="lead">We are Testing Jenkinsfile</p>
+      <iframe src="https://giphy.com/embed/8e8gbNRbkR8Zy" width="480" height="461" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/share-lo-chesi-8e8gbNRbkR8Zy">via GIPHY</a></p>
       <!--Intro -->
       <h2>Do you or a loved one hate snakes?</h2>
       <p>Snakes are a controversial topic. Some people love'em, some people just can't stand them. How do you get by in a world full of snakes?</p>
