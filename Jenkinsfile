@@ -92,8 +92,10 @@ pipeline {
         stage('Validate Deployment') {
             steps {
                 dir('terraform') {
-                    def DOCKER_HOST = readFile('publicip.txt').trim()
-                    sudo "curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1"
+                   script{
+                     def DOCKER_HOST = readFile('publicip.txt').trim()
+                     sudo "curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1"
+                    }  
                 }
             }
         }        
