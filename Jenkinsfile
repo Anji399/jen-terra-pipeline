@@ -94,7 +94,7 @@ pipeline {
                 dir('terraform') {
                    script{
                      def DOCKER_HOST = readFile('publicip.txt').trim()
-                     sudo "curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1"
+                     sh "curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1"
                     }  
                 }
             }
