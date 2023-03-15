@@ -93,8 +93,8 @@ pipeline {
             steps {
                 dir('terraform') {
                    script{
-                     def DOCKER_HOST = readFile('publicip.txt').trim()
-                     sh "curl -sL http://$DOCKER_HOST:8081/mywebapp/ || exit 1"
+                      def DOCKER_HOST = readFile('publicip.txt').trim()
+                      sh "curl -sL http://$DOCKER_HOST:8080/mywebapp/ || exit 1"
                     }  
                 }
             }
